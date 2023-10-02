@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import bookRouter from './routes/book/book.js'
+import movieRouter from './routes/movie/movie.js'
 
 
 
@@ -17,6 +17,7 @@ export default function makeApp(database:any) {
 
   app.use('/',(req,res,next)=>{
     res.locals.database = database
+    next()
   })
 
   // Define a sample route
@@ -26,7 +27,7 @@ export default function makeApp(database:any) {
 
   // biforcate routes
 
-  app.use('/book',bookRouter)
+  app.use('/movie',movieRouter)
 
 
   // Return the Express app instance

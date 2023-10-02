@@ -1,41 +1,108 @@
 const request = require('supertest');
 const makeApp = require('./build/app.js'); // Replace with the path to your app setup
-const mockingoose = require('mockingoose');
 
-const app = makeApp()
+const database = {
+  createMovie: jest.fn(),
+  getAllMovies: jest.fn(),
+  readMovie: jest.fn(),
+  updateMovie: jest.fn(),
+  deleteMovie: jest.fn(),
+};
 
-describe('Book Routes', () => {
-  let createdBookId
+describe('Movie Routes', () => {
+  let app;
+
   beforeEach(() => {
-    mockingoose(Book).reset();
-  });
-  // Test creating a new book
-  it('should create a new book', async () => {
+    // Create the Express app
+    app = makeApp(database);
 
-    const _doc = {
-      _id: '507f191e810c19729de860ea',
-      name: 'name',
-      email: 'name@email.com',
+    jest.clearAllMocks();
+  });
+
+  // Test creating a new movie
+  it('should create a new movie', async () => {
+    // Mock the behavior of createMovie function
+    database.createMovie.mockResolvedValueOnce({
+      _id: 'movieId',
+      title: 'Test Movie',
+      author: 'Test Author',
+      publishYear: 2022,
+      rating: 8
+    });
+
+    const newMovieData = {
+      title: 'Test Movie',
+      author: 'Test Author',
+      publishYear: 2022,
+      rating: 8
     };
 
-
-    // Make a POST request to your API route that creates a new book
     const response = await request(app)
-      .post('/book/create')
-      .send(newBookData);
+      .post('/movie/create')
+      .send(newMovieData);
 
-    // Ensure the response status is 201 (created)
     expect(response.status).toBe(201);
-
-    // Ensure the response contains the created book data
-    expect(response.body).toMatchObject(newBookData);
-    
+    expect(response.body).toMatchObject(newMovieData);
+    expect(database.createMovie).toHaveBeenCalledWith(
+      'Test Movie',
+      'Test Author',
+      2022, 
+      8
+    );
   });
-  it('should reach hello world', async () => {
-    const response = await request(app).get('/')
-    expect(response.statusCode).toBe(200);
 
+  // Test updating a movie by ID
+  it('should update a movie by ID', async () => {
+    // Mock the behavior of updateMovie function
+    const movieId = 'movieId'; // Replace with the actual movie ID
+    const updatedMovieData = {
+      title: 'Updated Movie',
+      author: 'Updated Author',
+      publishYear: 2023,
+      rating: 9
+    };
+    database.updateMovie.mockResolvedValueOnce(updatedMovieData);
+
+    const response = await request(app)
+      .put(`/movie/update/${movieId}`)
+      .send(updatedMovieData);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchObject(updatedMovieData);
+    expect(database.updateMovie).toHaveBeenCalledWith(movieId, updatedMovieData);
   });
- 
- 
+
+   // Test getting a movie by ID
+  it('should get a movie by ID', async () => {
+    // Mock the behavior of readMovie function
+    const mockMovie = {
+      _id: 'movieId',
+      title: 'Test Movie',
+      author: 'Test Author',
+      publishYear: 2022,
+      rating: 8
+    };
+    database.readMovie.mockResolvedValueOnce(mockMovie);
+
+    const response = await request(app).get('/movie/movieId');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toMatchObject(mockMovie);
+    expect(database.readMovie).toHaveBeenCalledWith('movieId');
+  });
+
+
+
+  // Test deleting a movie by ID
+  it('should delete a movie by ID', async () => {
+    // Mock the behavior of deleteMovie function
+    database.deleteMovie.mockResolvedValueOnce(true);
+
+    const response = await request(app).delete('/movie/delete/movieId');
+
+    expect(response.status).toBe(204);
+    expect(database.deleteMovie).toHaveBeenCalledWith('movieId');
+  });
+
+
 });

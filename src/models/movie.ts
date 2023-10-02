@@ -1,13 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IBook extends Document {
+export interface IMovie extends Document {
   title: string;
   author: string;
   publishYear: number;
-  // Add other book properties here
+  rating:number;
+  // Add other movie properties here
 }
 
-const bookSchema = new Schema({
+const movieSchema = new Schema({
   title: {
     type: String,
     required: true, // Make 'title' field mandatory
@@ -20,7 +21,11 @@ const bookSchema = new Schema({
     type: Number,
     required: true, // Make 'publishYear' field mandatory
   },
-  // Add other book properties and validation here
+  rating:{
+    type:Number,
+    required:true
+  }
+  // Add other movie properties and validation here
 });
 
-export default mongoose.model<IBook>('Book', bookSchema);
+export default mongoose.model<IMovie>('movie', movieSchema);
