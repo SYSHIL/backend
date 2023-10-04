@@ -14,74 +14,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
-// Create a new movie
+// Create a new Song
 router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let database = res.locals.database;
-        const { title, author, publishYear, rating } = req.body;
-        const movie = yield database.createMovie(title, author, publishYear, rating); // Use the createmovie function
-        res.status(201).json(movie);
+        const { title, author, rating, subscribers, url } = req.body;
+        const Song = yield database.createSong(title, author, rating, subscribers, url); // Use the createSong function
+        res.status(201).json(Song);
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Could not create the movie.' });
+        res.status(500).json({ error: 'Could not create the Song.' });
     }
 }));
-// Get all movies
+// Get all Songs
 router.get('/list', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let database = res.locals.database;
-        const movies = yield database.getAllMovies(); // Use the getAllmovies function
-        res.status(200).json({ movies });
+        const songs = yield database.getAllSongs(); // Use the getAllSongs function
+        res.status(200).json({ songs });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Could not fetch movies.' });
+        res.status(500).json({ error: 'Could not fetch Songs.' });
     }
 }));
-// Get a single movie by ID
+// Get a single Song by ID
 router.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let database = res.locals.database;
-        const movie = yield database.readMovie(req.params.id); // Use the getmovieById function
-        if (!movie) {
-            return res.status(404).json({ error: 'movie not found.' });
+        const Song = yield database.readSong(req.params.id); // Use the getSongById function
+        if (!Song) {
+            return res.status(404).json({ error: 'Song not found.' });
         }
-        res.status(200).json(movie);
+        res.status(200).json(Song);
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Could not fetch the movie.' });
+        res.status(500).json({ error: 'Could not fetch the Song.' });
     }
 }));
-// Update a movie by ID
+// Update a Song by ID
 router.put('/update/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let database = res.locals.database;
-        const updatedmovie = yield database.updateMovie(req.params.id, req.body); // Use the updatemovie function
-        if (!updatedmovie) {
-            return res.status(404).json({ error: 'movie not found.' });
+        const updatedSong = yield database.updateSong(req.params.id, req.body); // Use the updateSong function
+        if (!updatedSong) {
+            return res.status(404).json({ error: 'Song not found.' });
         }
-        res.status(200).json(updatedmovie);
+        res.status(200).json(updatedSong);
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Could not update the movie.' });
+        res.status(500).json({ error: 'Could not update the Song.' });
     }
 }));
-// Delete a movie by ID
+// Delete a Song by ID
 router.delete('/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let database = res.locals.database;
-        const deletedmovie = yield database.deleteMovie(req.params.id); // Use the deletemovie function
-        if (!deletedmovie) {
-            return res.status(404).json({ error: 'movie not found.' });
+        const deletedSong = yield database.deleteSong(req.params.id); // Use the deleteSong function
+        if (!deletedSong) {
+            return res.status(404).json({ error: 'Song not found.' });
         }
         res.status(204).json();
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Could not delete the movie.' });
+        res.status(500).json({ error: 'Could not delete the Song.' });
     }
 }));
 exports.default = router;

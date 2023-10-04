@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Movie, { IMovie } from '../models/movie';
+import Song, { ISong } from '../models/song';
 dotenv.config();
 
 const connectionString: string | undefined = process.env.CONNECTION_STRING;
@@ -20,52 +20,52 @@ mongoose
 
 
  let database = {
-    // Function to create a Movie
-    createMovie: async function (title: string, author: string, publishYear: number,rating: number): Promise<IMovie> {
+    // Function to create a song
+    createSong: async function (title: string, author: string,rating: number,subscribers:number,url:string): Promise<ISong> {
       try {
-        const movie = new Movie({ title, author, publishYear, rating });
-        const savedMovie = await movie.save();
-        return savedMovie;
+        const song = new Song({ title, author, rating, subscribers, url});
+        const savedsong = await song.save();
+        return savedsong;
       } catch (error) {
         throw error;
       }
     },
   
-    // Function to update a Movie by ID
-    updateMovie: async function (MovieId: string, updatedMovieData: Partial<IMovie>): Promise<IMovie | null> {
+    // Function to update a song by ID
+    updateSong: async function (songId: string, updatedsongData: Partial<ISong>): Promise<ISong | null> {
       try {
-        const updatedMovie = await Movie.findByIdAndUpdate(MovieId, updatedMovieData, { new: true });
-        return updatedMovie;
+        const updatedsong = await Song.findByIdAndUpdate(songId, updatedsongData, { new: true });
+        return updatedsong;
       } catch (error) {
         throw error;
       }
     },
   
-    // Function to delete a Movie by ID
-    deleteMovie: async function (MovieId: string): Promise<boolean> {
+    // Function to delete a song by ID
+    deleteSong: async function (songId: string): Promise<boolean> {
       try {
-        const deletedMovie = await Movie.findByIdAndRemove(MovieId);
-        return !!deletedMovie;
+        const deletedsong = await Song.findByIdAndRemove(songId);
+        return !!deletedsong;
       } catch (error) {
         throw error;
       }
     },
   
-    // Function to read a Movie by ID
-    readMovie: async function (MovieId: string): Promise<IMovie | null> {
+    // Function to read a song by ID
+    readSong: async function (songId: string): Promise<ISong | null> {
       try {
-        const movie = await Movie.findById(MovieId);
-        return movie;
+        const song = await Song.findById(songId);
+        return song;
       } catch (error) {
         throw error;
       }
     },
 
-    // Function to get all Movies
-    getAllMovies: async function (): Promise<IMovie[] | null> {
+    // Function to get all songs
+    getAllSongs: async function (): Promise<ISong[] | null> {
       try {
-        const movies = await Movie.find()
-        return movies;
+        const songs = await Song.find()
+        return songs;
       } catch (error) {
         throw error;
       }

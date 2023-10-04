@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import movieRouter from './routes/movie/movie.js'
+import songRouter from './routes/song/song.js'
 
 
 
@@ -27,7 +27,7 @@ export default function makeApp(database:any) {
 
   // biforcate routes
 
-  app.use('/movie',movieRouter)
+  app.use('/song',songRouter)
 
 
   // Return the Express app instance

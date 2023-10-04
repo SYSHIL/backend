@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const movie_1 = __importDefault(require("../models/movie"));
+const song_1 = __importDefault(require("../models/song"));
 dotenv_1.default.config();
 const connectionString = process.env.CONNECTION_STRING;
 if (!connectionString) {
@@ -29,61 +29,61 @@ mongoose_1.default
     console.error('Error while connecting to MongoDB:', error);
 });
 let database = {
-    // Function to create a Movie
-    createMovie: function (title, author, publishYear, rating) {
+    // Function to create a song
+    createSong: function (title, author, rating, subscribers, url) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const movie = new movie_1.default({ title, author, publishYear, rating });
-                const savedMovie = yield movie.save();
-                return savedMovie;
+                const song = new song_1.default({ title, author, rating, subscribers, url });
+                const savedsong = yield song.save();
+                return savedsong;
             }
             catch (error) {
                 throw error;
             }
         });
     },
-    // Function to update a Movie by ID
-    updateMovie: function (MovieId, updatedMovieData) {
+    // Function to update a song by ID
+    updateSong: function (songId, updatedsongData) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const updatedMovie = yield movie_1.default.findByIdAndUpdate(MovieId, updatedMovieData, { new: true });
-                return updatedMovie;
+                const updatedsong = yield song_1.default.findByIdAndUpdate(songId, updatedsongData, { new: true });
+                return updatedsong;
             }
             catch (error) {
                 throw error;
             }
         });
     },
-    // Function to delete a Movie by ID
-    deleteMovie: function (MovieId) {
+    // Function to delete a song by ID
+    deleteSong: function (songId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const deletedMovie = yield movie_1.default.findByIdAndRemove(MovieId);
-                return !!deletedMovie;
+                const deletedsong = yield song_1.default.findByIdAndRemove(songId);
+                return !!deletedsong;
             }
             catch (error) {
                 throw error;
             }
         });
     },
-    // Function to read a Movie by ID
-    readMovie: function (MovieId) {
+    // Function to read a song by ID
+    readSong: function (songId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const movie = yield movie_1.default.findById(MovieId);
-                return movie;
+                const song = yield song_1.default.findById(songId);
+                return song;
             }
             catch (error) {
                 throw error;
             }
         });
     },
-    // Function to get all Movies
-    getAllMovies: function () {
+    // Function to get all songs
+    getAllSongs: function () {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const movies = yield movie_1.default.find();
-                return movies;
+                const songs = yield song_1.default.find();
+                return songs;
             }
             catch (error) {
                 throw error;

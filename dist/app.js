@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const movie_js_1 = __importDefault(require("./routes/movie/movie.js"));
+const song_js_1 = __importDefault(require("./routes/song/song.js"));
 function makeApp(database) {
     const app = (0, express_1.default)();
     // Middleware to handle CORS (Cross-Origin Resource Sharing)
@@ -21,7 +21,7 @@ function makeApp(database) {
         res.send('Hello, World!');
     });
     // biforcate routes
-    app.use('/movie', movie_js_1.default);
+    app.use('/song', song_js_1.default);
     // Return the Express app instance
     return app;
 }

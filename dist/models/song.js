@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const movieSchema = new mongoose_1.Schema({
+const SongSchema = new mongoose_1.Schema({
     title: {
         type: String,
         required: true, // Make 'title' field mandatory
@@ -33,14 +33,13 @@ const movieSchema = new mongoose_1.Schema({
         type: String,
         required: true, // Make 'author' field mandatory
     },
-    publishYear: {
-        type: Number,
-        required: true, // Make 'publishYear' field mandatory
-    },
     rating: {
         type: Number,
         required: true
-    }
-    // Add other movie properties and validation here
+    },
+    subscribers: {
+        type: Number
+    },
+    url: String,
 });
-exports.default = mongoose_1.default.model('movie', movieSchema);
+exports.default = mongoose_1.default.model('Song', SongSchema);
